@@ -1,6 +1,7 @@
 namespace CodeCustodian.ViewModel
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
     using CodeCustodian.Core;
@@ -25,6 +26,10 @@ namespace CodeCustodian.ViewModel
             {
                 // Code runs "for real"
                 this.codeRepositoryStore = new CodeRepositoryStore();
+                var updateServices = new List<ICodeRepositoryUpdateService>();
+                var queryServices = new List<ICodeRepositoryQueryService>();
+                queryServices.Add(new TFS.CodeRepositoryQueryService());
+                this.codeRepositoryMonitor = new CodeRepositoryMonitor(queryServices, updateServices);
                 this.RetrieveItemsList();
             }
             this.InitCommands();
@@ -43,6 +48,8 @@ namespace CodeCustodian.ViewModel
         public RelayCommand CommandAppExit { get; private set; }
 
         public RelayCommand CommandGetLatest { get; private set; }
+        
+        public RelayCommand CommandQueryStatus { get; private set; }
 
         public RelayCommand CommandOpenScreenSettings { get; private set; }
 
@@ -53,6 +60,8 @@ namespace CodeCustodian.ViewModel
         private ObservableCollection<CodeRepositoryItem> itemList = new ObservableCollection<CodeRepositoryItem>();
 
         private ICodeRepositoryStore codeRepositoryStore;
+
+        private CodeRepositoryMonitor codeRepositoryMonitor;
 
         public ObservableCollection<CodeRepositoryItem> ItemList
         {
@@ -68,10 +77,7 @@ namespace CodeCustodian.ViewModel
                     return;
                 }
 
-                var oldValue = this.itemList;
                 this.itemList = value;
-
-                // Update bindings, no broadcast
                 RaisePropertyChanged(ItemListPropertyName);
             }
         }
@@ -80,8 +86,24 @@ namespace CodeCustodian.ViewModel
         {
             this.CommandAppExit = new RelayCommand(ExitApp, () => true);
             this.CommandGetLatest = new RelayCommand(GetLatestCode, CanGetLatestCode);
+            this.CommandQueryStatus = new RelayCommand(QueryCodeStatus, CanQueryCodeStatus);
             this.CommandOpenScreenSettings = new RelayCommand(OpenScreenSettings, () => true);
             this.CommandOpenScreenAbout = new RelayCommand(OpenScreenAbout, () => true);
+        }
+
+        private void QueryCodeStatus()
+        {
+            this.codeRepositoryMonitor.Refresh(this.ItemList);
+
+            // todo replace this with a better way of having the data refresh (INotifyPropertyChanged in a non-UI class? Probably need a viewmodel)
+            var copy = this.ItemList;
+            this.ItemList = null;
+            this.ItemList = copy;
+        }
+
+        private bool CanQueryCodeStatus()
+        {
+            return true;
         }
 
         private void GetLatestCode()

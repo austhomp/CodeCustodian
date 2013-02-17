@@ -11,7 +11,7 @@
 
         public string Name { get; private set; } 
         
-        public string Status { get; private set; } 
+        public string Status { get; set; } 
         
         public string Type { get; private set; } 
     }

@@ -2,6 +2,8 @@
 {
     public interface ICodeRepositoryQueryService
     {
-        string QueryStatus(CodeRepositoryItem codeRepositoryItem); 
+        string QueryStatus(CodeRepositoryItem codeRepositoryItem);
+
+        bool HandlesType(string type);
     }
 }

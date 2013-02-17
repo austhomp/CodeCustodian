@@ -41,9 +41,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0"></TextBlock>
-            <Button Grid.Column="1" Command="{Binding CommandGetLatest}" HorizontalAlignment="Center">Get Latest</Button>
+            <Button Grid.Column="1" Command="{Binding CommandQueryStatus}" HorizontalAlignment="Center">Refresh</Button>
+            <Button Grid.Column="2" Command="{Binding CommandGetLatest}" HorizontalAlignment="Center">Get Latest</Button>
         </Grid>
     </Grid>
 </Window>

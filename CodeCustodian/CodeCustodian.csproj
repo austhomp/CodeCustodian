@@ -114,6 +114,10 @@
       <Project>{34CFD8E0-7808-43AE-A91A-8FA1389FB228}</Project>
       <Name>CodeCustodian.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CodeCustodian.TFS\CodeCustodian.TFS.csproj">
+      <Project>{81ED30D8-2B16-44A1-9480-641B704E8D6A}</Project>
+      <Name>CodeCustodian.TFS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
