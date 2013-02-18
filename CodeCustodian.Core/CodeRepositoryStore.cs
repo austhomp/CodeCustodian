@@ -12,7 +12,7 @@
             if (list == null)
             {
                 this.list = new List<CodeRepositoryItem>();
-                this.list.Add(new CodeRepositoryItem("Test", "N/A", "TEST"));
+                this.list.Add(new CodeRepositoryItem("Test", "TEST", null, "N/A"));
             }
 
             return list;

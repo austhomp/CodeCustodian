@@ -17,9 +17,9 @@ namespace CodeCustodian.ViewModel
             if (this.IsInDesignMode)
             {
                 var fakeList = new ObservableCollection<CodeRepositoryItem>();
-                fakeList.Add(new CodeRepositoryItem("Test", "OK", "test"));
-                fakeList.Add(new CodeRepositoryItem("Test2", "Out of Date", "test"));
-                fakeList.Add(new CodeRepositoryItem("Test3", "Merge Conflict", "test"));
+                fakeList.Add(new CodeRepositoryItem("Test", "test", null, "OK"));
+                fakeList.Add(new CodeRepositoryItem("Test2", "test", null, "Out of Date"));
+                fakeList.Add(new CodeRepositoryItem("Test3", "test", null, "Merge Conflict"));
                 this.ItemList = fakeList;
             }
             else
