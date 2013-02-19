@@ -31,7 +31,7 @@
         {
             foreach (var item in codeRepositoryItems)
             {
-                var queryService = this.queryServices.FirstOrDefault(x => x.HandlesType(item.Type));
+                var queryService = this.queryServices.FirstOrDefault(x => x.CanHandle(item));
                 var newStatus = "Not Supported";
                 if (queryService != null)
                 {

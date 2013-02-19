@@ -4,6 +4,6 @@
     {
         string QueryStatus(CodeRepositoryItem codeRepositoryItem);
 
-        bool HandlesType(string type);
+        bool CanHandle(CodeRepositoryItem codeRepositoryItem);
     }
 }

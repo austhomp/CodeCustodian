@@ -43,6 +43,7 @@
     <Compile Include="CodeRepositoryItem.cs" />
     <Compile Include="CodeRepositoryMonitor.cs" />
     <Compile Include="CodeRepositoryStore.cs" />
+    <Compile Include="CodeRepositoryItemExtensions.cs" />
     <Compile Include="ICodeRepositoryMonitor.cs" />
     <Compile Include="ICodeRepositoryQueryService.cs" />
     <Compile Include="ICodeRepositoryStore.cs" />
