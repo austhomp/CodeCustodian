@@ -2,43 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class CodeRepositoryStore : ICodeRepositoryStore
     {
-        private IList<CodeRepositoryItem> list;
+        private readonly IConfiguration configuration;
 
-        public IList<CodeRepositoryItem> RetrieveConfiguredCodeRepositories()
+
+        public CodeRepositoryStore(IConfiguration configuration)
         {
-            if (list == null)
-            {
-                this.list = new List<CodeRepositoryItem>();
-                this.list.Add(new CodeRepositoryItem("All TFS Workspaces", "TFS.AllWorkspaces", null, "N/A"));
-            }
-
-            return list;
+            this.configuration = configuration;
         }
 
-        public void Add(CodeRepositoryItem codeRepositoryItem)
+        public IEnumerable<CodeRepositoryItem> RetrieveConfiguredCodeRepositories()
         {
-            if (codeRepositoryItem == null)
-            {
-                throw new ArgumentNullException("codeRepositoryItem");
-            }
-
-            list.Add(codeRepositoryItem);
-        }
-
-        public void Remove(CodeRepositoryItem codeRepositoryItem)
-        {
-            if (codeRepositoryItem == null)
-            {
-                throw new ArgumentNullException("codeRepositoryItem");
-            }
-
-            if (this.list.Contains(codeRepositoryItem))
-            {
-                list.Remove(codeRepositoryItem);
-            }
+            return this.configuration.CodeRepositoryItems.ToList();
         }
     }
 }

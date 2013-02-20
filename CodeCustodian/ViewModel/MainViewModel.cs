@@ -24,8 +24,9 @@ namespace CodeCustodian.ViewModel
             }
             else
             {
-                // Code runs "for real"
-                this.codeRepositoryStore = new CodeRepositoryStore();
+                // todo inject these instead of newing them up
+                this.appConfiguration = new AppConfiguration();
+                this.codeRepositoryStore = new CodeRepositoryStore(this.appConfiguration);
                 var updateServices = new List<ICodeRepositoryUpdateService>();
                 var queryServices = new List<ICodeRepositoryQueryService>();
                 queryServices.Add(new TFS.CodeRepositoryQueryService(new TFS.QueryCommandFactory()));
@@ -62,6 +63,8 @@ namespace CodeCustodian.ViewModel
         private ICodeRepositoryStore codeRepositoryStore;
 
         private CodeRepositoryMonitor codeRepositoryMonitor;
+
+        private AppConfiguration appConfiguration;
 
         public ObservableCollection<CodeRepositoryItem> ItemList
         {

@@ -48,6 +48,7 @@
     <Compile Include="ICodeRepositoryQueryService.cs" />
     <Compile Include="ICodeRepositoryStore.cs" />
     <Compile Include="ICodeRepositoryUpdateService.cs" />
+    <Compile Include="IConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

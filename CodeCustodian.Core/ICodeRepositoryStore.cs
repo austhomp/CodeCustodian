@@ -4,10 +4,6 @@
 
     public interface ICodeRepositoryStore
     {
-        IList<CodeRepositoryItem> RetrieveConfiguredCodeRepositories();
-
-        void Add(CodeRepositoryItem codeRepositoryItem);
-
-        void Remove(CodeRepositoryItem codeRepositoryItem);
+        IEnumerable<CodeRepositoryItem> RetrieveConfiguredCodeRepositories();
     }
 }
