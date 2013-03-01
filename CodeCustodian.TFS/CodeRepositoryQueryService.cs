@@ -6,11 +6,8 @@
 
     public class CodeRepositoryQueryService : ICodeRepositoryQueryService
     {
-        private readonly IQueryCommandFactory queryCommandFactory;
-
-        public CodeRepositoryQueryService(IQueryCommandFactory queryCommandFactory)
+        public CodeRepositoryQueryService()
         {
-            this.queryCommandFactory = queryCommandFactory;
         }
 
         public string QueryStatus(CodeRepositoryItem codeRepositoryItem)
@@ -21,14 +18,36 @@
                 return "Not Supported";
             }
 
-            var queryCommand = this.queryCommandFactory.CreateFor(typeToHandle.Value);
-            if (queryCommand == null)
+            string result = "Not Implemented";
+            switch (typeToHandle.Value)
             {
-                return "Not Implemented";
+                case TFSHandledType.AllWorkspaces:
+                    result = this.QueryAllWorkspaces();
+                    break;
+                case TFSHandledType.Workspace:
+                    result = this.QueryWorkspace(codeRepositoryItem);
+                    break;
+                case TFSHandledType.Folder:
+                    result = this.QueryFolder(codeRepositoryItem);
+                    break;
             }
 
-            var response = queryCommand.Execute(codeRepositoryItem);
-            return response.Result;
+            return result;
+        }
+
+        private string QueryAllWorkspaces()
+        {
+            return "todo";
+        }
+
+        private string QueryWorkspace(CodeRepositoryItem codeRepositoryItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string QueryFolder(CodeRepositoryItem codeRepositoryItem)
+        {
+            throw new NotImplementedException();
         }
 
         public bool CanHandle(CodeRepositoryItem codeRepositoryItem)

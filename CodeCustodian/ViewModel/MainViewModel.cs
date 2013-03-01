@@ -29,7 +29,7 @@ namespace CodeCustodian.ViewModel
                 this.codeRepositoryStore = new CodeRepositoryStore(this.appConfiguration);
                 var updateServices = new List<ICodeRepositoryUpdateService>();
                 var queryServices = new List<ICodeRepositoryQueryService>();
-                queryServices.Add(new TFS.CodeRepositoryQueryService(new TFS.QueryCommandFactory()));
+                queryServices.Add(new TFS.CodeRepositoryQueryService());
                 this.codeRepositoryMonitor = new CodeRepositoryMonitor(queryServices, updateServices);
                 this.RetrieveItemsList();
             }
@@ -111,7 +111,7 @@ namespace CodeCustodian.ViewModel
 
         private void GetLatestCode()
         {
-            return; // todo
+            // todo
         }
 
         private bool CanGetLatestCode()

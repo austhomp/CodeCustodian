@@ -28,10 +28,8 @@
                     break;
                 case TFSHandledType.Workspace:
                     throw new NotImplementedException(string.Format("Repository type {0} has not been implemented for GetLatest yet", repositoryType.Value));
-                    break;
                 case TFSHandledType.Folder:
                     throw new NotImplementedException(string.Format("Repository type {0} has not been implemented for GetLatest yet", repositoryType.Value));
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -40,17 +38,20 @@
         private void GetLatestForAllWorkspaces(CodeRepositoryItem codeRepositoryItem)
         {
 
-            var listWorkspacesCommand = this.commandFactory.Create(TfsCommandType.ListWorkspaces);
+            var listWorkspacesCommand = this.commandFactory.Create(TfsCommandType.ListWorkspaces, string.Empty);
             var listWorkspacesResult = listWorkspacesCommand.Run();
-
+            System.Diagnostics.Debug.WriteLine("output" + listWorkspacesResult.Output);
+            return;
             // parse workspaces from output
 
             // foreach workspace
-            var mappedFoldersResult = this.commandFactory.Create(TfsCommandType.ListWorkingFoldersForWorkspace);
+            string workspace = "";
+            var mappedFoldersResult = this.commandFactory.Create(TfsCommandType.ListWorkingFoldersForWorkspace, workspace);
             // get a working folder for each workspace
 
             // foreach working folder
-            var getLatestCommand = this.commandFactory.Create(TfsCommandType.GetLatest);
+            string workingDirectory = "";
+            var getLatestCommand = this.commandFactory.Create(TfsCommandType.GetLatest, workingDirectory);
             var getLatestResult = getLatestCommand.Run();
 
         }

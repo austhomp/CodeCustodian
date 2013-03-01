@@ -2,6 +2,6 @@
 {
     public interface ITfsCommandFactory
     {
-        ITfsCommand Create(TfsCommandType commandType);
+        ITfsCommand Create(TfsCommandType commandType, string parameter);
     }
 }
