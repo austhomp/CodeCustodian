@@ -6,8 +6,11 @@
 
     public class CodeRepositoryQueryService : ICodeRepositoryQueryService
     {
-        public CodeRepositoryQueryService()
+        private readonly ITfsCommandFactory commandFactory;
+
+        public CodeRepositoryQueryService(ITfsCommandFactory commandFactory)
         {
+            this.commandFactory = commandFactory;
         }
 
         public string QueryStatus(CodeRepositoryItem codeRepositoryItem)
@@ -37,7 +40,10 @@
 
         private string QueryAllWorkspaces()
         {
-            return "todo";
+            string workingDirectory = "."; // todo really get this
+            var queryLatestCommand = this.commandFactory.Create(TfsCommandType.QueryLatest, workingDirectory);
+            var queryLatestResult = queryLatestCommand.Run();
+            return queryLatestResult.ExitCode.ToString();
         }
 
         private string QueryWorkspace(CodeRepositoryItem codeRepositoryItem)

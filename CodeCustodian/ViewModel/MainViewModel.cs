@@ -29,7 +29,7 @@ namespace CodeCustodian.ViewModel
                 this.codeRepositoryStore = new CodeRepositoryStore(this.appConfiguration);
                 var updateServices = new List<ICodeRepositoryUpdateService>();
                 var queryServices = new List<ICodeRepositoryQueryService>();
-                queryServices.Add(new TFS.CodeRepositoryQueryService());
+                queryServices.Add(new TFS.CodeRepositoryQueryService(new TFS.TfsCommandFactory()));
                 this.codeRepositoryMonitor = new CodeRepositoryMonitor(queryServices, updateServices);
                 this.RetrieveItemsList();
             }

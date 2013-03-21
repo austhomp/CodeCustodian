@@ -14,6 +14,8 @@
                     return new TfsCommand(string.Format("workfold /workspace:{0}", parameter));
                 case TfsCommandType.GetLatest:
                     return new TfsCommand("get", parameter);
+                case TfsCommandType.QueryLatest:
+                    return new TfsCommand("get /preview /noprompt", parameter);
                 default:
                     throw new ArgumentOutOfRangeException("commandType");
             }

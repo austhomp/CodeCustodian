@@ -4,6 +4,7 @@
     {
         ListWorkspaces,
         ListWorkingFoldersForWorkspace,
-        GetLatest
+        GetLatest,
+        QueryLatest
     }
 }
