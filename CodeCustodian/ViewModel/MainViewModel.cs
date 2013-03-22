@@ -5,6 +5,7 @@ namespace CodeCustodian.ViewModel
     using System.Collections.ObjectModel;
 
     using CodeCustodian.Core;
+    using CodeCustodian.TFS;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
@@ -29,10 +30,12 @@ namespace CodeCustodian.ViewModel
                 this.codeRepositoryStore = new CodeRepositoryStore(this.appConfiguration);
                 var updateServices = new List<ICodeRepositoryUpdateService>();
                 var queryServices = new List<ICodeRepositoryQueryService>();
-                queryServices.Add(new TFS.CodeRepositoryQueryService(new TFS.TfsCommandFactory()));
+                var tfsCommandFactory = new TfsCommandFactory(new TfsCommandPathLocator());
+                queryServices.Add(new CodeRepositoryQueryService(tfsCommandFactory, new TfsWorkspaceQueryService(tfsCommandFactory)));
                 this.codeRepositoryMonitor = new CodeRepositoryMonitor(queryServices, updateServices);
                 this.RetrieveItemsList();
             }
+
             this.InitCommands();
         }
 

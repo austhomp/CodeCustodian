@@ -2,6 +2,11 @@
 {
     public class TfsCommandResult
     {
+        public TfsCommandResult(ExitCodes exitCode, string output)
+            : this((int)exitCode, output)
+        {
+        }
+
         public TfsCommandResult(int exitCode, string output)
         {
             this.ExitCode = exitCode;

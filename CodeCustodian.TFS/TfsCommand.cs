@@ -10,37 +10,51 @@
 
         private readonly string workingDirectory;
 
-        public TfsCommand(string arguments, string workingDirectory = null)
+        private readonly string programPath;
+
+        public TfsCommand(string programPath, string arguments, string workingDirectory = null)
         {
+            if (programPath == null)
+            {
+                throw new ArgumentNullException("programPath");
+            }
+
+            this.programPath = programPath;
             this.arguments = arguments;
             this.workingDirectory = workingDirectory;
         }
 
         public TfsCommandResult Run()
         {
-            var programPath = GetTfExePath();
-            if (programPath == null)
-            {
-                throw new FileNotFoundException("TF.EXE");
-            }
-
-            var startInfo = new ProcessStartInfo(programPath, this.arguments);
+            ////var path = string.Format("\"{0}\"", this.programPath);
+            var path = string.Format("\"{0}\"", this.programPath);
+            var startInfo = new ProcessStartInfo(path);
+            startInfo.Arguments = this.arguments;
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            ////startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            
             if (this.workingDirectory != null)
             {
                 startInfo.WorkingDirectory = this.workingDirectory;
             }
 
-            startInfo.CreateNoWindow = true;
-            var process = new Process() { StartInfo = startInfo };
-            process.Start();
-            process.WaitForExit();
-            return new TfsCommandResult(process.ExitCode, process.StandardOutput.ReadToEnd());
-        }
-
-        private string GetTfExePath()
-        {
-            string path = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft Visual Studio 11.0\Common7\IDE", "tf.exe");
-            return File.Exists(path) ? path : null;
+            var process = new Process() { StartInfo = startInfo, EnableRaisingEvents = true};
+            try
+            {
+                process.Start();
+                process.WaitForExit();
+                return new TfsCommandResult(process.ExitCode, process.StandardOutput.ReadToEnd());
+            }
+            catch (Exception e)
+            {
+                // todo: really log this
+                string message = string.Format("Error running TfsCommand in the shell. Command \"{0}\" arguments \"{1}\"", path, arguments);
+                Debug.WriteLine(message, e);
+                return new TfsCommandResult(ExitCodes.Fail, string.Empty);
+            }
         }
     }
 }

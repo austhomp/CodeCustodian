@@ -1,16 +1,19 @@
 ﻿namespace CodeCustodian.TFS
 {
     using System;
+    using System.Linq;
 
     using CodeCustodian.Core;
 
     public class CodeRepositoryUpdateService : ICodeRepositoryUpdateService
     {
         private readonly ITfsCommandFactory commandFactory;
+        private readonly ITfsWorkspaceQueryService workspaceQueryService;
 
-        public CodeRepositoryUpdateService(ITfsCommandFactory commandFactory)
+        public CodeRepositoryUpdateService(ITfsCommandFactory commandFactory, ITfsWorkspaceQueryService workspaceQueryService)
         {
             this.commandFactory = commandFactory;
+            this.workspaceQueryService = workspaceQueryService;
         }
 
         public void GetLatest(CodeRepositoryItem codeRepositoryItem)
@@ -37,23 +40,12 @@
 
         private void GetLatestForAllWorkspaces(CodeRepositoryItem codeRepositoryItem)
         {
-
-            var listWorkspacesCommand = this.commandFactory.Create(TfsCommandType.ListWorkspaces, string.Empty);
-            var listWorkspacesResult = listWorkspacesCommand.Run();
-            System.Diagnostics.Debug.WriteLine("output" + listWorkspacesResult.Output);
-            return;
-            // parse workspaces from output
-
-            // foreach workspace
-            string workspace = "";
-            var mappedFoldersResult = this.commandFactory.Create(TfsCommandType.ListWorkingFoldersForWorkspace, workspace);
-            // get a working folder for each workspace
-
-            // foreach working folder
-            string workingDirectory = "";
-            var getLatestCommand = this.commandFactory.Create(TfsCommandType.GetLatest, workingDirectory);
-            var getLatestResult = getLatestCommand.Run();
-
+            var workspaceResults = this.workspaceQueryService.RetrieveAll();
+            foreach (var workspaceResult in workspaceResults)
+            {
+                var getLatestCommand = this.commandFactory.Create(TfsCommandType.GetLatest, workspaceResult.MappedPaths.First());
+                var getLatestResult = getLatestCommand.Run();
+            }
         }
     }
 }

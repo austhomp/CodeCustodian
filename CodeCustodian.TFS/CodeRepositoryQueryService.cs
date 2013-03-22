@@ -1,16 +1,20 @@
 ﻿namespace CodeCustodian.TFS
 {
     using System;
+    using System.Linq;
+    using System.Text;
 
     using CodeCustodian.Core;
 
     public class CodeRepositoryQueryService : ICodeRepositoryQueryService
     {
         private readonly ITfsCommandFactory commandFactory;
+        private readonly ITfsWorkspaceQueryService workspaceQueryService;
 
-        public CodeRepositoryQueryService(ITfsCommandFactory commandFactory)
+        public CodeRepositoryQueryService(ITfsCommandFactory commandFactory, ITfsWorkspaceQueryService workspaceQueryService)
         {
             this.commandFactory = commandFactory;
+            this.workspaceQueryService = workspaceQueryService;
         }
 
         public string QueryStatus(CodeRepositoryItem codeRepositoryItem)
@@ -38,12 +42,23 @@
             return result;
         }
 
+        public bool CanHandle(CodeRepositoryItem codeRepositoryItem)
+        {
+            return codeRepositoryItem.CanBeHandledBy<TFSHandledType>("TFS");
+        }
+
         private string QueryAllWorkspaces()
         {
-            string workingDirectory = "."; // todo really get this
-            var queryLatestCommand = this.commandFactory.Create(TfsCommandType.QueryLatest, workingDirectory);
-            var queryLatestResult = queryLatestCommand.Run();
-            return queryLatestResult.ExitCode.ToString();
+            var output = new StringBuilder();
+            var workspaceResults = this.workspaceQueryService.RetrieveAll();
+            foreach (var workspaceResult in workspaceResults)
+            {
+                var queryLatestCommand = this.commandFactory.Create(TfsCommandType.GetLatest, workspaceResult.MappedPaths.First());
+                var queryLatestResult = queryLatestCommand.Run();
+                output.AppendLine(queryLatestResult.Output);
+            }
+
+            return output.ToString();
         }
 
         private string QueryWorkspace(CodeRepositoryItem codeRepositoryItem)
@@ -54,11 +69,6 @@
         private string QueryFolder(CodeRepositoryItem codeRepositoryItem)
         {
             throw new NotImplementedException();
-        }
-
-        public bool CanHandle(CodeRepositoryItem codeRepositoryItem)
-        {
-            return codeRepositoryItem.CanBeHandledBy<TFSHandledType>("TFS");
         }
     }
 }

@@ -42,14 +42,20 @@
   <ItemGroup>
     <Compile Include="CodeRepositoryQueryService.cs" />
     <Compile Include="CodeRepositoryUpdateService.cs" />
+    <Compile Include="ExitCodes.cs" />
     <Compile Include="ITfsCommand.cs" />
     <Compile Include="ITfsCommandFactory.cs" />
+    <Compile Include="ITfsCommandPathLocator.cs" />
+    <Compile Include="ITfsWorkspaceQueryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TfsCommand.cs" />
     <Compile Include="TfsCommandFactory.cs" />
+    <Compile Include="TfsCommandPathLocator.cs" />
     <Compile Include="TfsCommandResult.cs" />
     <Compile Include="TfsCommandType.cs" />
     <Compile Include="TFSHandledType.cs" />
+    <Compile Include="TfsWorkspaceQueryService.cs" />
+    <Compile Include="TfsWorkspaceResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeCustodian.Core\CodeCustodian.Core.csproj">
