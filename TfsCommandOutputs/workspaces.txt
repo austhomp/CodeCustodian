@@ -1,0 +1,6 @@
+Collection: http://tfs.company.com:8080/tfs/collection
+Workspace               Owner            Computer   Comment
+----------------------- ---------------- ---------- ---------------------------
+AAAAAAAAA               DOM\user         HOSTNAME
+BBBBBBBBB               user@dom         HOSTNAME
+CCC                     DOM\user         HOSTNAME

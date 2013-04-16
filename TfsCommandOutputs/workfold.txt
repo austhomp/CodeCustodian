@@ -1,0 +1,7 @@
+===============================================================================
+Workspace : MyWorkspace (DOM\user)
+Collection: http://tfs.company.com:8080/tfs/collection
+ $/XX/MyWorkspace/ONE: C:\DIR\MyWorkspace\ONE
+ $/XX/MyWorkspace/TWO: C:\DIR\MyWorkspace\TWO
+ $/XX/MyWorkspace/THREE: C:\DIR\MyWorkspace\THREE
+ 
