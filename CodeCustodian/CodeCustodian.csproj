@@ -112,9 +112,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="MVVMLight.Nuget.Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CodeCustodian.Core\CodeCustodian.Core.csproj">
       <Project>{747d3a6a-8e64-461a-ad3f-28a75ccaf3fa}</Project>
       <Name>CodeCustodian.Core</Name>

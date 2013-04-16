@@ -43,7 +43,7 @@
             return mappedFolders;
         }
 
-        private IEnumerable<string> ParseWorkspaceOutput(string output)
+        internal IEnumerable<string> ParseWorkspaceOutput(string output)
         {
             var workspaces = new List<string>();
             
