@@ -31,7 +31,8 @@ namespace CodeCustodian.ViewModel
                 var updateServices = new List<ICodeRepositoryUpdateService>();
                 var queryServices = new List<ICodeRepositoryQueryService>();
                 var tfsCommandFactory = new TfsCommandFactory(new TfsCommandPathLocator());
-                queryServices.Add(new CodeRepositoryQueryService(tfsCommandFactory, new TfsWorkspaceQueryService(tfsCommandFactory)));
+                var tfsCommandOutputParser = new TfsCommandOutputParser();
+                queryServices.Add(new CodeRepositoryQueryService(tfsCommandFactory, new TfsWorkspaceQueryService(tfsCommandFactory, tfsCommandOutputParser)));
                 this.codeRepositoryMonitor = new CodeRepositoryMonitor(queryServices, updateServices);
                 this.RetrieveItemsList();
             }

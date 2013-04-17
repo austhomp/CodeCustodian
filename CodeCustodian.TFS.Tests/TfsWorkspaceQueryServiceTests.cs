@@ -21,29 +21,6 @@
         }
 
         [TestMethod]
-        public void ParseWorkspaceOutput_Should_ReturnTheWorkspace_When_TheValidInputHasOneWorkspace()
-        {
-            var queryService = new TfsWorkspaceQueryService(this.commandFactory.Object);
-            
-            var workspaces = queryService.ParseWorkspaceOutput(this.CreateListWorkspacesOutput("workspace1")).ToList();
-
-            Assert.IsTrue(workspaces.Count == 1);
-            Assert.IsTrue(workspaces.First() == "workspace1");
-        }
-
-        [TestMethod]
-        public void ParseWorkspaceOutput_Should_ReturnAllWorkspaces_When_TheValidInputHasMultipleWorkspaces()
-        {
-            var queryService = new TfsWorkspaceQueryService(this.commandFactory.Object);
-
-            var workspaces = queryService.ParseWorkspaceOutput(this.CreateListWorkspacesOutput("workspace1", "workspace 2")).ToList();
-
-            Assert.IsTrue(workspaces.Count == 2);
-            Assert.IsTrue(workspaces.First() == "workspace1");
-            Assert.IsTrue(workspaces.Skip(1).First() == "workspace 2");
-        }
-
-        [TestMethod]
         public void RetrieveAll_Should_ReturnTheWorkspace_When_TheValidInputHasOneWorkspace()
         {
             var listWorkspacesCommand = new Mock<ITfsCommand>();
@@ -51,7 +28,7 @@
             listWorkspacesCommand.Setup(x => x.Run()).Returns(new TfsCommandResult(1, listWorkspacesOutput));
             this.commandFactory.Setup(x => x.Create(TfsCommandType.ListWorkspaces, It.IsAny<string>()))
                 .Returns(listWorkspacesCommand.Object);
-            var queryService = new TfsWorkspaceQueryService(this.commandFactory.Object);
+            var queryService = new TfsWorkspaceQueryService(this.commandFactory.Object, new TfsCommandOutputParser());
 
             var workspaces = queryService.RetrieveAll().ToList();
 
