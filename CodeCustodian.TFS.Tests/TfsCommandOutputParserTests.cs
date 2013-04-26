@@ -41,7 +41,7 @@ namespace CodeCustodian.TFS.Tests
         }
 
         [TestMethod]
-        public void ParseWorkspaceOutput_Should_NoWorkspaces_When_TheValidInputHasNoWorkspaces()
+        public void ParseWorkspaceOutput_Should_ReturnNoWorkspaces_When_TheValidInputHasNoWorkspaces()
         {
             var output = this.CreateListWorkspacesOutput();
 
@@ -51,7 +51,7 @@ namespace CodeCustodian.TFS.Tests
         }
 
         [TestMethod]
-        public void ParseWorkspaceOutput_Should_NoWorkspaces_When_TheInputIsNotValid()
+        public void ParseWorkspaceOutput_Should_ReturnNoWorkspaces_When_TheInputIsNotValid()
         {
             var output = "workspace1";
 
