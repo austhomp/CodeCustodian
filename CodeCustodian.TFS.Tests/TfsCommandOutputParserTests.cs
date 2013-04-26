@@ -66,7 +66,7 @@ namespace CodeCustodian.TFS.Tests
         {
             var output = @"C:\folder";
 
-            var workspaces = this.parser.ParseWorkspacesOutput(output).ToList();
+            var workspaces = this.parser.ParseMappedFoldersOutput(output).ToList();
 
             Assert.IsFalse(workspaces.Any());
         }
@@ -81,7 +81,7 @@ namespace CodeCustodian.TFS.Tests
                               };
             var output = this.CreateMappedFoldersOutput(folders);
 
-            var workspaces = this.parser.ParseWorkspacesOutput(output).ToList();
+            var workspaces = this.parser.ParseMappedFoldersOutput(output).ToList();
 
             Assert.IsTrue(workspaces.Single() == Folder1);
         }
@@ -98,7 +98,7 @@ namespace CodeCustodian.TFS.Tests
                               };
             var output = this.CreateMappedFoldersOutput(folders);
 
-            var workspaces = this.parser.ParseWorkspacesOutput(output).ToList();
+            var workspaces = this.parser.ParseMappedFoldersOutput(output).ToList();
 
             Assert.IsTrue(workspaces[0] == Folder1);
             Assert.IsTrue(workspaces[1] == Folder2);
