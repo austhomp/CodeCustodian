@@ -10,9 +10,20 @@
         {
             var mappedFolders = new List<string>();
 
-            if (!output.StartsWith("todo: find the no mapped folders text"))
+            var lines = output.SplitLines();
+            int lineCount = lines.Count();
+            if (lineCount > 3)
             {
-                // todo: parse mapped folders
+                for (int i = 2; i < lineCount; i++)
+                {
+                    var line = lines[i];
+                    var indexOfColon = line.IndexOf(':');
+                    if (indexOfColon > 0)
+                    {
+                        var mappedFolder = line.Substring(indexOfColon + 1).Trim();
+                        mappedFolders.Add(mappedFolder);
+                    }
+                }
             }
 
             return mappedFolders;

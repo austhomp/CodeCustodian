@@ -77,7 +77,7 @@ namespace CodeCustodian.TFS.Tests
             const string Folder1 = @"C:\Folder";
             var folders = new Dictionary<string, string>()
                               {
-                                  { "Workspace1", Folder1 }
+                                  { "TfsPath1", Folder1 }
                               };
             var output = this.CreateMappedFoldersOutput(folders);
 
@@ -92,9 +92,9 @@ namespace CodeCustodian.TFS.Tests
             const string Folder1 = @"C:\Folder";
             const string Folder2 = @"D:\Folder Name\";
             var folders = new Dictionary<string, string>()
-                              {
-                                  { "Workspace1", Folder1 } ,
-                                  { "Workspace1", Folder2}
+                              { 
+                                { "TfsPath1", Folder1 }, 
+                                { "TfsPath2", Folder2 }
                               };
             var output = this.CreateMappedFoldersOutput(folders);
 
