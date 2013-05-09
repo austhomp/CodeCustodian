@@ -53,9 +53,12 @@
             var workspaceResults = this.workspaceQueryService.RetrieveAll();
             foreach (var workspaceResult in workspaceResults)
             {
-                var queryLatestCommand = this.commandFactory.Create(TfsCommandType.GetLatest, workspaceResult.MappedPaths.First());
-                var queryLatestResult = queryLatestCommand.Run();
-                output.AppendLine(queryLatestResult.Output);
+                if (workspaceResult.MappedPaths.Any())
+                {
+                    var queryLatestCommand = this.commandFactory.Create(TfsCommandType.QueryLatest, workspaceResult.MappedPaths.First());
+                    var queryLatestResult = queryLatestCommand.Run();
+                    output.AppendLine(queryLatestResult.Output);
+                }
             }
 
             return output.ToString();

@@ -17,11 +17,18 @@
                 for (int i = 2; i < lineCount; i++)
                 {
                     var line = lines[i];
-                    var indexOfColon = line.IndexOf(':');
-                    if (indexOfColon > 0)
+                    var indexOfDollarSign = line.IndexOf('$');
+
+                    // mapped folder lines start with some space and "$"
+                    if (indexOfDollarSign > 0)
                     {
-                        var mappedFolder = line.Substring(indexOfColon + 1).Trim();
-                        mappedFolders.Add(mappedFolder);
+                        // mapped folder lines have the physical path after a ":"
+                        var indexOfColon = line.IndexOf(':');
+                        if (indexOfColon > 0)
+                        {
+                            var mappedFolder = line.Substring(indexOfColon + 1).Trim();
+                            mappedFolders.Add(mappedFolder);
+                        }
                     }
                 }
             }

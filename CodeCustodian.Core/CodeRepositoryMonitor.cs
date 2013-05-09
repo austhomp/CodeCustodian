@@ -36,6 +36,10 @@
                 if (queryService != null)
                 {
                     newStatus = queryService.QueryStatus(item);
+                    if (string.IsNullOrWhiteSpace(newStatus))
+                    {
+                        newStatus = "Up to date or not mapped";
+                    }
                 }
 
                 item.Status = newStatus;
