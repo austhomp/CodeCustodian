@@ -26,6 +26,13 @@
 
         public TfsCommandResult Run()
         {
+            if (string.IsNullOrWhiteSpace(this.programPath))
+            {
+                const string ErrorMessage = "Could not find the path to tf.exe";
+                Debug.WriteLine(ErrorMessage);
+                return new TfsCommandResult(ExitCodes.Fail, ErrorMessage);
+            }
+
             ////var path = string.Format("\"{0}\"", this.programPath);
             var path = string.Format("\"{0}\"", this.programPath);
             var startInfo = new ProcessStartInfo(path);
@@ -51,7 +58,7 @@
             catch (Exception e)
             {
                 // todo: really log this
-                string message = string.Format("Error running TfsCommand in the shell. Command \"{0}\" arguments \"{1}\"", path, arguments);
+                string message = string.Format("Error running TfsCommand in the shell. Command \"{0}\" arguments \"{1}\"", path, this.arguments);
                 Debug.WriteLine(message, e);
                 return new TfsCommandResult(ExitCodes.Fail, string.Empty);
             }
