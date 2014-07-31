@@ -29,14 +29,24 @@
                 <MenuItem Header="About" Command="{Binding CommandOpenScreenAbout}" />
             </MenuItem>
         </Menu>
-        <ListView ItemsSource="{Binding ItemList}" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Item" DisplayMemberBinding="{Binding Name}"  />
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid ItemsSource="{Binding ItemList}" Grid.Row="1" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Repository" Width="SizeToCells" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Status" Width="*" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Status}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
