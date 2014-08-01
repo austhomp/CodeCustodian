@@ -37,9 +37,8 @@
             var path = string.Format("\"{0}\"", this.programPath);
             var startInfo = new ProcessStartInfo(path);
             startInfo.Arguments = this.arguments;
-            startInfo.CreateNoWindow = false;
+            startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
-            ////startInfo.WindowStyle = ProcessWindowStyle.Hidden;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
             
@@ -53,7 +52,10 @@
             {
                 process.Start();
                 process.WaitForExit();
-                return new TfsCommandResult(process.ExitCode, process.StandardOutput.ReadToEnd());
+                var err = process.StandardError.ReadToEnd();
+                var output = process.StandardOutput.ReadToEnd();
+
+                return new TfsCommandResult(process.ExitCode, err + output);
             }
             catch (Exception e)
             {
