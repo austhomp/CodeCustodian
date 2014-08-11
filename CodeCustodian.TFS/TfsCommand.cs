@@ -51,9 +51,21 @@
             try
             {
                 process.Start();
-                process.WaitForExit();
+                process.WaitForExit(1000 * 20);
+                var hadToClose = false;
+                if (!process.HasExited)
+                {
+                    hadToClose = true;
+                    process.Kill();
+                    process.WaitForExit();
+                }
+
                 var err = process.StandardError.ReadToEnd();
                 var output = process.StandardOutput.ReadToEnd();
+                if (hadToClose)
+                {
+                    err = err + Environment.NewLine + "[TFS command timed out]" + Environment.NewLine;
+                }
 
                 return new TfsCommandResult(process.ExitCode, err + output);
             }

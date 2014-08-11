@@ -29,7 +29,7 @@
                 <MenuItem Header="About" Command="{Binding CommandOpenScreenAbout}" />
             </MenuItem>
         </Menu>
-        <DataGrid ItemsSource="{Binding ItemList}" Grid.Row="1" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <DataGrid ItemsSource="{Binding ItemList}" Grid.Row="1" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Repository" Width="SizeToCells" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
