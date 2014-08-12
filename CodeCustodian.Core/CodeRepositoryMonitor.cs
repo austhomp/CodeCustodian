@@ -31,6 +31,7 @@
         {
             foreach (var item in codeRepositoryItems)
             {
+                item.Status = "Refreshing...";
                 var queryService = this.queryServices.FirstOrDefault(x => x.CanHandle(item));
                 var newStatus = "Not Supported";
                 if (queryService != null)

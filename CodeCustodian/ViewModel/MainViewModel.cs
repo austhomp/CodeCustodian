@@ -3,21 +3,27 @@ namespace CodeCustodian.ViewModel
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using CodeCustodian.Core;
+    using CodeCustodian.Helpers;
     using CodeCustodian.TFS;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
     using GalaSoft.MvvmLight.Messaging;
 
-    public class MainViewModel : ViewModelBase
+    using UpdateControls.Collections;
+    using UpdateControls.Fields;
+
+    public class MainViewModel
     {
         public MainViewModel()
         {
-            if (this.IsInDesignMode)
+            if (ViewModelHelper.IsInDesignMode)
             {
-                var fakeList = new ObservableCollection<CodeRepositoryItem>();
+                var fakeList = new IndependentList<CodeRepositoryItem>();
                 fakeList.Add(new CodeRepositoryItem("Test", "test", null, "OK"));
                 fakeList.Add(new CodeRepositoryItem("Test2", "test", null, "Out of Date"));
                 fakeList.Add(new CodeRepositoryItem("Test3", "test", null, "Merge Conflict"));
@@ -62,7 +68,7 @@ namespace CodeCustodian.ViewModel
 
         public const string ItemListPropertyName = "ItemList";
 
-        private ObservableCollection<CodeRepositoryItem> itemList = new ObservableCollection<CodeRepositoryItem>();
+        private IndependentList<CodeRepositoryItem> itemList = new IndependentList<CodeRepositoryItem>();
 
         private ICodeRepositoryStore codeRepositoryStore;
 
@@ -70,7 +76,9 @@ namespace CodeCustodian.ViewModel
 
         private AppConfiguration appConfiguration;
 
-        public ObservableCollection<CodeRepositoryItem> ItemList
+        private bool isRefreshing = false;
+
+        public IndependentList<CodeRepositoryItem> ItemList
         {
             get
             {
@@ -79,13 +87,7 @@ namespace CodeCustodian.ViewModel
 
             set
             {
-                if (this.itemList == value)
-                {
-                    return;
-                }
-
                 this.itemList = value;
-                RaisePropertyChanged(ItemListPropertyName);
             }
         }
 
@@ -93,24 +95,35 @@ namespace CodeCustodian.ViewModel
         {
             this.CommandAppExit = new RelayCommand(ExitApp, () => true);
             this.CommandGetLatest = new RelayCommand(GetLatestCode, CanGetLatestCode);
-            this.CommandQueryStatus = new RelayCommand(QueryCodeStatus, CanQueryCodeStatus);
+            this.CommandQueryStatus = new RelayCommand(QueryCodeStatusAsync, CanQueryCodeStatus);
             this.CommandOpenScreenSettings = new RelayCommand(OpenScreenSettings, () => true);
             this.CommandOpenScreenAbout = new RelayCommand(OpenScreenAbout, () => true);
         }
 
+        private async void QueryCodeStatusAsync()
+        {
+            await Task.Run(() => this.QueryCodeStatus());
+        }
+
         private void QueryCodeStatus()
         {
-            this.codeRepositoryMonitor.Refresh(this.ItemList);
+            if (isRefreshing) return;
+            isRefreshing = true;
 
-            // todo replace this with a better way of having the data refresh (INotifyPropertyChanged in a non-UI class? Probably need a viewmodel)
-            var copy = this.ItemList;
-            this.ItemList = null;
-            this.ItemList = copy;
+            try
+            {
+                this.codeRepositoryMonitor.Refresh(this.ItemList);
+            }
+            finally
+            {
+                isRefreshing = false;
+                RefreshUI();
+            }
         }
 
         private bool CanQueryCodeStatus()
         {
-            return true;
+            return !isRefreshing;
         }
 
         private void GetLatestCode()
@@ -126,6 +139,11 @@ namespace CodeCustodian.ViewModel
         private static void ExitApp()
         {
             Messenger.Default.Send<string, MainWindow>("close");
+        }
+
+        private static void RefreshUI()
+        {
+            Messenger.Default.Send<string, MainWindow>("refreshbindings");
         }
 
         private static void OpenScreenAbout()

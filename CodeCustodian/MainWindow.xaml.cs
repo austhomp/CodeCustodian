@@ -1,6 +1,7 @@
 ﻿namespace CodeCustodian
 {
     using System.Windows;
+    using System.Windows.Input;
 
     using GalaSoft.MvvmLight.Messaging;
 
@@ -13,14 +14,18 @@
         {
             InitializeComponent();
             Messenger.Default.Register<string>(this, true, HandleStringMessage);
-
         }
 
         private void HandleStringMessage(string message)
         {
-            if ("close" == message)
+            switch (message)
             {
-                this.Close();
+                case "close":
+                    this.Close();
+                    break;
+                case "refreshbindings":
+                    Dispatcher.Invoke(CommandManager.InvalidateRequerySuggested);
+                    break;
             }
         }
     }

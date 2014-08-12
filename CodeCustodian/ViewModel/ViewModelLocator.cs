@@ -5,6 +5,8 @@ namespace CodeCustodian.ViewModel
 
     using Microsoft.Practices.ServiceLocation;
 
+    using UpdateControls.XAML;
+
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
@@ -32,11 +34,11 @@ namespace CodeCustodian.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
-        public MainViewModel Main
+        public object Main
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
+                return ForView.Wrap(ServiceLocator.Current.GetInstance<MainViewModel>());
             }
         }
         
